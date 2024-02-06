@@ -19,7 +19,7 @@ export const Container = styled.div`
 `;
 
 export const BackButton = styled(Link)`
-border: 0;
+    border: 0;
     outline: 0;
     background: transparent;
 `;
@@ -33,16 +33,76 @@ export const Owner = styled.header`
         border-radius: 20%;
         margin: 20px 0;
     }
-    h1{
+
+    h1 {
         font-size: 30px;
         color: #0D2636;
     }
-    p{
+
+    p {
         margin-top: 5px;
         font-size: 14px;
         color: #000000;
         text-align: center;
         line-height: 1.4;
         max-width: 400px;
+    }
+`;
+
+export const IssuesList = styled.ul`
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 1px solid #EEEEEE;
+    list-style: none;
+
+    li {
+
+        & + li {
+            margin-top: 12px;
+        }
+
+        display: flex;
+        padding: 15px 10px;
+
+        img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid #0D2636;
+        }
+
+        div {
+            flex: 1;
+            margin-left: 12px;
+            
+            p{
+                margin-top: 10px;
+                font-size: 12px;
+                color: #000000;
+            }
+        }
+
+        strong {
+            font-size: 15px;
+
+            a {
+                text-decoration: none;
+                color: #222222;
+                transition: 0.3s;
+
+                &:hover {
+                    color: #0071db;
+                }
+            }
+            span{
+                background: #222;
+                color: #FFFFFF;
+                border-radius: 4px;
+                font-size: 12px;
+                font-weight: 600;
+                padding: 4px 7px;
+                margin-left: 10px;
+            }
+        }
     }
 `;

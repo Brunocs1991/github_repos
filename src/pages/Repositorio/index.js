@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {BackButton, Container, Loading, Owner} from "./styles";
+import {BackButton, Container, IssuesList, Loading, Owner} from "./styles";
 import api from "../../services/api";
 import {FaArrowLeft} from "react-icons/fa";
 
@@ -27,10 +27,11 @@ const Repositorio = () => {
             setIssues(issuesData.data)
             setLoading(false)
         }
-        load().then().catch()
-    },[repositorio]);
 
-    if(loading){
+        load().then().catch()
+    }, [repositorio]);
+
+    if (loading) {
         return (
             <Loading>
                 <h1>Carregando...</h1>
@@ -47,6 +48,22 @@ const Repositorio = () => {
                 <h1>{repo.name}</h1>
                 <p>{repo.description}</p>
             </Owner>
+            <IssuesList>
+                {issues.map(issue => (
+                    <li key={String(issue.id)}>
+                        <img src={issue.user.avatar_url} alt={issue.user.login}/>
+                        <div>
+                            <strong>
+                                <a href={issue.html_url} target="_blank" rel="noreferrer">{issue.title}</a>
+                                {issue.labels.map(label => (
+                                    <span key={String(label.id)}>{label.name}</span>
+                                ))}
+                            </strong>
+                            <p>{issue.user.login}</p>
+                        </div>
+                    </li>
+                ))}
+            </IssuesList>
         </Container>
     )
 }
