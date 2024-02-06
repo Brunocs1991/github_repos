@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css, keyframes} from "styled-components";
 
 export const Container = styled.div`
     max-width: 700px;
@@ -7,14 +7,14 @@ export const Container = styled.div`
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     padding: 30px;
     margin: 80px auto;
-    
-    h1{
+
+    h1 {
         font-size: 20px;
         display: flex;
         align-items: center;
         flex-direction: row;
-        
-        svg{
+
+        svg {
             margin-right: 10px;
         }
     }
@@ -24,8 +24,8 @@ export const Form = styled.form`
     margin-top: 30px;
     display: flex;
     flex-direction: row;
-    
-    input{
+
+    input {
         flex: 1;
         border: 1px solid #DDDDDD;
         padding: 10px 15px;
@@ -33,7 +33,20 @@ export const Form = styled.form`
         font-size: 17px;
     }
 `;
-export const SubmitButton = styled.button`
+// Criando animação button
+
+const animated = keyframes`
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+`;
+export const SubmitButton = styled.button.attrs(props => ({
+    type: 'submit',
+    disabled: props.loading
+}))`
     background: #0D2636;
     border: 0;
     border-radius: 4px;
@@ -42,4 +55,16 @@ export const SubmitButton = styled.button`
     display: flex;
     justify-content: center;
     align-items: center;
+    
+    &[disabled]{
+        cursor: not-allowed;
+        opacity: 0.5;
+    }
+    ${props => props.loading && 
+            css`
+                svg {
+                    animation: ${animated} 2s linear infinite;
+                }
+            `
+}
 `;
