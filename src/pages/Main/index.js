@@ -1,8 +1,11 @@
 import React from "react";
+import {Title} from "./styles";
 
-const Main =  () =>{
-    return(
-        <div>Main</div>
+const Main = () => {
+    return (
+        <Title>
+            Main
+        </Title>
     )
 }
 
