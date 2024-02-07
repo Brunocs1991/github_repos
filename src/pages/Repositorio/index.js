@@ -1,16 +1,24 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {BackButton, Container, IssuesList, Loading, Owner, PageActions} from "./styles";
+import {BackButton, Container, FilterList, IssuesList, Loading, Owner, PageActions} from "./styles";
 import api from "../../services/api";
 import {FaArrowLeft} from "react-icons/fa";
 
 const Repositorio = () => {
+
+    const filters = [
+        {state: 'all', label: 'Todas', active: true},
+        {state: 'open', label: 'Abertas', active: false},
+        {state: 'closed', label: 'Fechadas', active: false}
+    ]
 
     const {repositorio} = useParams();
     const [repo, setRepo] = useState({});
     const [issues, setIssues] = useState([])
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
+
+    const [filterIndex, setFilterIndex] = useState(0)
 
     useEffect(() => {
         async function load() {
@@ -19,7 +27,7 @@ const Repositorio = () => {
                 api.get(`repos/${nomeRepo}`),
                 api.get(`repos/${nomeRepo}/issues`, {
                     params: {
-                        state: 'open',
+                        state: filters.find(f => f.active).state,
                         per_page: 5
                     }
                 })
@@ -37,7 +45,7 @@ const Repositorio = () => {
             const nomeRepo = decodeURIComponent(repositorio)
             const response = await api.get(`/repos/${nomeRepo}/issues`, {
                 params: {
-                    state: 'open',
+                    state: filters[filterIndex].state,
                     page,
                     per_page: 5
                 }
@@ -46,10 +54,14 @@ const Repositorio = () => {
         }
 
         loadInssue().then().catch()
-    }, [repositorio, page]);
+    }, [repositorio, page, filterIndex]);
 
     const handlePage = (action) => {
         setPage(action === 'back' ? page - 1 : page + 1)
+    }
+    const handleFilter = (index) => {
+        setFilterIndex(index)
+        setPage(0)
     }
 
     if (loading) {
@@ -69,6 +81,16 @@ const Repositorio = () => {
                 <h1>{repo.name}</h1>
                 <p>{repo.description}</p>
             </Owner>
+            <FilterList active={filterIndex}>
+                {filters.map((filter, index) => (
+                    <button
+                        type={"button"}
+                        key={filter.label}
+                        onClick={() => handleFilter(index)}>
+                        {filter.label}
+                    </button>
+                ))}
+            </FilterList>
             <IssuesList>
                 {issues.map(issue => (
                     <li key={String(issue.id)}>
